@@ -78,6 +78,7 @@ class LinkedList {
         }
 
         void insert(int val, unsigned int ind) {
+            // does not work properly
             Node *new_ptr = new Node;
             new_ptr->data = val;
             new_ptr->link = head;
