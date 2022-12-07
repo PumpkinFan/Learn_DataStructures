@@ -16,9 +16,9 @@ class LinkedList {
         }
 
         // copy constructor
-        LinkedList(const LinkedList &ell) {
-            head = ell.head;
-            tail = ell.tail;
+        LinkedList(const LinkedList &original_list) {
+            head = original_list.head;
+            tail = original_list.tail;
         }
 
         Node* get_head() {
@@ -77,7 +77,36 @@ class LinkedList {
             head = new_ptr;
         }
 
-        void insert(int val, unsigned int idx) {
+        void insert(int val, int idx) {
+            Node *new_ptr = new Node;
+            new_ptr->data = val;
+            new_ptr->link = nullptr;
+
+            Node *before_ptr = head;
+            for (auto itr = 0; itr < idx - 1; itr++) {
+                before_ptr = before_ptr->link;
+                if (before_ptr == nullptr) {
+                    std::cout << "Insert failed. Index out of list range." << std::endl;
+                    return;
+                }
+            }
+
+            if (before_ptr == head && idx == 0) {
+                new_ptr->link = head;
+                head = new_ptr;
+            }
+            else {
+                new_ptr->link = before_ptr->link;
+                before_ptr->link = new_ptr; 
+            }
+
+            if (new_ptr->link == nullptr) {
+                tail = new_ptr;
+            }
+            
+        }
+
+        void insert_old(int val, unsigned int idx) {
             // start by placing new node at beginning of linked list 
             Node *new_ptr = new Node;
             new_ptr->data = val;
@@ -129,23 +158,32 @@ class LinkedList {
 };
 
 int main() {
-    LinkedList a;
-    a.add_node(1);
-    a.add_node(10);
-    a.add_node(3);
-    a.add_node(92);
 
-    std::cout << "\n";
+    // TEST GENERAL USE INSERT FUNCTION
+    // LinkedList a;
+    // a.add_node(1);
+    // a.add_node(10);
+    // a.add_node(3);
+    // a.add_node(92);
+    //
+    // std::cout << "\n";
+    //
+    // a.insert(1024, 4);
+    // a.display();
+    //
+    // std::cout << "\n" << a.get_tail()->data << std::endl;
 
-    a.insert(1024, 12);
-    a.display();
+    LinkedList test_list;
+    test_list.insert_at_beginning(12);
+    test_list.insert_at_beginning(14);
+    test_list.insert_at_beginning(17);
+    test_list.insert(365, 2);
+    test_list.display();
 
-    std::cout << "\n";  
-    
-    LinkedList b;
-    b.add_node(8675);
-    b.insert(42, 1);
-    b.display();
+    // LinkedList b;
+    // b.add_node(8675);
+    // b.insert(42, 1);
+    // b.display();
 }
 
 /* attempt at insert anywhere
