@@ -70,7 +70,7 @@ class LinkedList {
             }
         }
 
-        void insert_at_start(int val) {
+        void insert_at_beginning(int val) {
             Node *new_ptr = new Node;
             new_ptr->data = val;
             new_ptr->link = head;
@@ -78,7 +78,7 @@ class LinkedList {
         }
 
         void insert(int val, unsigned int idx) {
-            // start by placing new node at front of linked list 
+            // start by placing new node at beginning of linked list 
             Node *new_ptr = new Node;
             new_ptr->data = val;
             new_ptr->link = head;
@@ -90,6 +90,11 @@ class LinkedList {
             // each iteration moves new node one place forward in list
             while (i <= idx) {
 
+                if (new_ptr->link == nullptr) {
+                    std::cout << "insertion failed; index larger than size of list" << std::endl;
+                    prev_ptr->link = nullptr;
+                    break;
+                }
                 // reset previous node (head for first iteration)
                 if (i == 1) {
                     head = new_ptr->link;
@@ -98,13 +103,13 @@ class LinkedList {
                     prev_ptr->link = new_ptr->link;
                 }
                 
-                Node *nxt_link = new_ptr->link->link;  // store next link for new node
-                new_ptr->link->link = new_ptr;  // point current link to new node
-                
                 prev_ptr = new_ptr->link;  // update previous node pointer
                 
-                new_ptr->link = nxt_link;  // update new node pointer
-                std::cout << "insert counter: " << i << std::endl;
+                Node *nxt_link = new_ptr->link->link;  // store next link for new node
+                new_ptr->link->link = new_ptr;  // point current link to new node
+                                
+                new_ptr->link = nxt_link;  // update new node link
+
                 ++i;                    
             }
         }
@@ -132,16 +137,15 @@ int main() {
 
     std::cout << "\n";
 
-    a.insert(1024, 2);
+    a.insert(1024, 12);
     a.display();
-    // LinkedList b;
-    // b.add_node(314);
-    // b.add_node(420);
 
-    // auto c = LinkedList::concatenate(a, b);
-    // c.print_node(0);
-    // c.print_node(4);
-    // return 0;
+    std::cout << "\n";  
+    
+    LinkedList b;
+    b.add_node(8675);
+    b.insert(42, 1);
+    b.display();
 }
 
 /* attempt at insert anywhere
