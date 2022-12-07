@@ -77,24 +77,38 @@ class LinkedList {
             head = new_ptr;
         }
 
-        void insert(int val, unsigned int ind) {
-            // does not work properly
+        void insert(int val, unsigned int idx) {
+            // start by placing new node at front of linked list 
             Node *new_ptr = new Node;
             new_ptr->data = val;
             new_ptr->link = head;
             head = new_ptr;
-            Node *prev_ptr;
-            for (unsigned int i = 0; i <= ind; ++i) {
-                if (head == new_ptr) {
-                    prev_ptr = head;
+            
+            Node *prev_ptr;  // keep track of ptr to previous node in list
+            unsigned int i = 1;
+
+            // each iteration moves new node one place forward in list
+            while (i <= idx) {
+
+                // reset previous node (head for first iteration)
+                if (i == 1) {
                     head = new_ptr->link;
                 }
-                Node *next_link = new_ptr->link->link;
-                prev_ptr->link = new_ptr;
-                prev_ptr = new_ptr->link;
-                new_ptr->link = next_link;
+                else {
+                    prev_ptr->link = new_ptr->link;
+                }
+                
+                Node *nxt_link = new_ptr->link->link;  // store next link for new node
+                new_ptr->link->link = new_ptr;  // point current link to new node
+                
+                prev_ptr = new_ptr->link;  // update previous node pointer
+                
+                new_ptr->link = nxt_link;  // update new node pointer
+                std::cout << "insert counter: " << i << std::endl;
+                ++i;                    
             }
         }
+
 
         void concat_list(LinkedList target_list) {
             auto target_head = target_list.get_head();
@@ -115,11 +129,10 @@ int main() {
     a.add_node(10);
     a.add_node(3);
     a.add_node(92);
-    a.display();
 
     std::cout << "\n";
 
-    a.insert(1024, 1);
+    a.insert(1024, 2);
     a.display();
     // LinkedList b;
     // b.add_node(314);
