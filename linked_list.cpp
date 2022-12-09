@@ -112,6 +112,36 @@ class LinkedList {
             
         }
 
+        void remove_node(unsigned int idx) {
+            // delete node currently at position idx
+
+            if (!head && !tail) {
+                std::cout << "Remove failed. List is empty." << std::endl;
+                return;
+            }
+
+            if (idx == 0) {
+                head = head->link;
+                return;
+            }
+
+            Node *before_ptr = head;
+            for (auto itr = 0; itr < idx - 1; ++itr) {
+                before_ptr = before_ptr->link;
+                if (before_ptr->link == nullptr) {
+                    std::cout << "Remove failed. Index out of list range." << std::endl;
+                    return;
+                }
+                
+            }
+
+            before_ptr->link = before_ptr->link->link;
+            
+            if (before_ptr->link == nullptr) {
+                tail = before_ptr;
+            }
+        }
+
         void insert_old(int val, unsigned int idx) {
             // start by placing new node at beginning of linked list 
             Node *new_ptr = new Node;
@@ -180,10 +210,12 @@ int main() {
     // std::cout << "\n" << a.get_tail()->data << std::endl;
 
     LinkedList test_list;
-    test_list.insert_at_beginning(12);
-    test_list.insert_at_beginning(14);
-    test_list.insert_at_beginning(17);
-    test_list.insert(365, 1);
+    test_list.add_node(12);
+    test_list.add_node(14);
+    test_list.add_node(17);
+    test_list.add_node(365);
+    test_list.remove_node(3);
+
     test_list.display();
 
     std::cout << "\n";
