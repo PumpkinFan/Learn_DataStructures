@@ -77,10 +77,22 @@ class LinkedList {
             head = new_ptr;
         }
 
-        void insert(int val, int idx) {
+        void insert(int val, unsigned int idx) {
             Node *new_ptr = new Node;
             new_ptr->data = val;
             new_ptr->link = nullptr;
+
+            if (idx == 0) {
+                new_ptr->link = head;
+                head = new_ptr;
+                return;
+            }
+
+            // check empty list (all point to NULL)
+            if (!head && !tail && !new_ptr->link) {
+                std::cout << "Insert failed. Index out of list range." << std::endl;
+                return;
+            }
 
             Node *before_ptr = head;
             for (auto itr = 0; itr < idx - 1; itr++) {
@@ -91,14 +103,8 @@ class LinkedList {
                 }
             }
 
-            if (before_ptr == head && idx == 0) {
-                new_ptr->link = head;
-                head = new_ptr;
-            }
-            else {
-                new_ptr->link = before_ptr->link;
-                before_ptr->link = new_ptr; 
-            }
+            new_ptr->link = before_ptr->link;
+            before_ptr->link = new_ptr; 
 
             if (new_ptr->link == nullptr) {
                 tail = new_ptr;
@@ -177,25 +183,11 @@ int main() {
     test_list.insert_at_beginning(12);
     test_list.insert_at_beginning(14);
     test_list.insert_at_beginning(17);
-    test_list.insert(365, 2);
+    test_list.insert(365, 1);
     test_list.display();
 
-    // LinkedList b;
-    // b.add_node(8675);
-    // b.insert(42, 1);
-    // b.display();
+    std::cout << "\n";
+    LinkedList b;
+    b.insert(42, 10);
+    b.display();
 }
-
-/* attempt at insert anywhere
-
-            unsigned int i = 0;
-            while (i < ind && new_ptr->link != nullptr) {
-                if (head == new_ptr) {
-                    head = new_ptr->link;  // reset head to old first element
-                }
-                Node *next_link = new_ptr->link->link;
-                new_ptr->link->link = new_ptr;
-                new_ptr->link = next_link;
-                i++;
-            }
-*/
