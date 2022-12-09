@@ -135,7 +135,9 @@ class LinkedList {
                 
             }
 
-            before_ptr->link = before_ptr->link->link;
+            Node *tmp_link = before_ptr->link->link;
+            delete before_ptr->link;
+            before_ptr->link = tmp_link;
             
             if (before_ptr->link == nullptr) {
                 tail = before_ptr;
@@ -176,7 +178,7 @@ int main() {
     test_list.add_node(14);
     test_list.add_node(17);
     test_list.add_node(365);
-    test_list.remove_node(3);
+    test_list.remove_node(0);
 
     test_list.display();
 
