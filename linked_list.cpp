@@ -9,6 +9,19 @@ struct Node {
 class LinkedList {
     private:
         Node *head, *tail;  // head = ptr to first node, tail = ptr to last node
+
+        void _reverse(Node *ptr) {
+            if (ptr->link == nullptr) {
+                tail = head;
+                head = ptr;
+                return;
+            }
+            this->_reverse(ptr->link);
+            ptr->link->link = ptr;
+            ptr->link = nullptr;
+
+        }
+
     public:
         LinkedList() {
             head = nullptr;
@@ -120,12 +133,14 @@ class LinkedList {
                 return;
             }
 
+            Node *before_ptr = head;
+
             if (idx == 0) {
-                head = head->link;
+                head = before_ptr->link;
+                delete before_ptr;
                 return;
             }
 
-            Node *before_ptr = head;
             for (auto itr = 0; itr < idx - 1; ++itr) {
                 before_ptr = before_ptr->link;
                 if (before_ptr->link == nullptr) {
@@ -144,18 +159,34 @@ class LinkedList {
             }
         }
 
+        void reverse() {
+            this->_reverse(this->get_head());
+        }
+
         void concat_list(LinkedList target_list) {
             auto target_head = target_list.get_head();
             tail->link = target_head;
         }
 
-        static LinkedList concatenate (LinkedList list1, LinkedList list2) {
+        static LinkedList concatenate(LinkedList list1, LinkedList list2) {
             LinkedList result;
             result = list1;
             result.tail->link = list2.get_head();
             return result;
         }
+
+        static void reverse_print(Node *list_head) {
+            if (list_head == nullptr) {
+                std::cout << std::endl;
+                return;
+            }
+            reverse_print(list_head->link);
+            std::cout << list_head->data << std::endl;
+
+        }
+
 };
+
 
 int main() {
 
@@ -174,16 +205,17 @@ int main() {
     // std::cout << "\n" << a.get_tail()->data << std::endl;
 
     LinkedList test_list;
+    test_list.add_node(0);
     test_list.add_node(12);
     test_list.add_node(14);
     test_list.add_node(17);
     test_list.add_node(365);
-    test_list.remove_node(0);
-
+    std::cout << "\n";
+    test_list.reverse();
     test_list.display();
 
-    std::cout << "\n";
+
+
     LinkedList b;
-    b.remove_node(10);
-    b.display();
+    LinkedList::reverse_print(b.get_head());
 }
